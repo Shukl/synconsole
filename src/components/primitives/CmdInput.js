@@ -30,12 +30,11 @@ class CmdInput extends Component {
     
     componentDidMount() {
         this.textAreaRef.current.focus()
-        this.state.value === '\n' && this.setState({value: ''})
     }
 
     //auto adjusts the number of rows on the textarea element to ensure there is no text overflow.  
     changeTextArea = (ta) => {
-        ta.style.height = "auto"
+        // ta.style.height = "auto"
         ta.style.height = ta.scrollHeight + 'px'
     }
 
@@ -43,19 +42,21 @@ class CmdInput extends Component {
     // keep track of value and keep adjusting the textarea size.
     onChange = (e) => {
         this.changeTextArea(e.target);
+        (e.target.value === '\n') && (e.target.value = '')
         this.setState({value: e.target.value})
     }
 
     // Checks for enter/return key to interpret and record the commands
     onKeyPress = (e) => {
-        // check for Enter+Shift for line break; check for Enter to interpret
-        this.state.value && !(e.key === 'Enter' && e.shiftKey) && e.key === 'Enter' && this.parse(this.state.value)
+        // check for Enter+Shift for line break; check for Enter to interpret if value is non-null
+        !(e.key === 'Enter' && e.shiftKey) && e.key === 'Enter' && this.parse(e.target.value);
     }
 
     parse = () => {
         let { value, activity, commands } = this.state
-        if (value === ':help' || value === ':clear' || value === ':history') {
-            switch (value) {
+        let trimmedVal = value.trim()
+        if (trimmedVal === ':help' || trimmedVal === ':clear' || trimmedVal === ':history') {
+            switch (trimmedVal) {
                 case ':help':
                     this.setState({helpVisible: true,
                         historyVisible: false,
@@ -95,7 +96,6 @@ class CmdInput extends Component {
         else {
             try {
                 const interpreted = new Interpreter(value)
-                console.log(interpreted)
                 if (interpreted.value === undefined) {
                     this.setState({
                         result: 'undefined',
