@@ -1,0 +1,19 @@
+.suggestions {
+    border: 0.5px solid transparent;
+    border-color: thistle;
+    background-color: cadetblue;
+    padding: 1px;
+    font-size: 16px;
+    margin-top: -15px;
+    margin-left: 5rem;
+    margin-right: 20rem;
+    color: white;
+}
+
+.suggestions ul {
+    list-style-type: none;
+}
+
+.suggestions ul li {
+    cursor: pointer;
+}

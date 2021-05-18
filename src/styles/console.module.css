@@ -1,0 +1,55 @@
+.typeArea {
+    resize: none;
+    background: none;
+    font-family: "Menlo", consolas, monospace;
+    border: 0;
+    padding-left: 10px;
+    display: block;
+    width: 100%;
+    outline: none;
+    font-size: 10pt;
+    color: rgb(180, 180, 180);
+}
+
+.help {
+    color: cadetblue;
+}
+
+.error {
+    background-color: #35000b;
+    color: rgb(192, 192, 192);
+}
+
+.success {
+    background-color: none;
+    color: white;
+}
+
+.cmdHistory {
+    background-color: #16172c;
+    color: whitesmoke; 
+}
+
+.cmdHelp {
+    background-color: #3a3a3a;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    padding: 1rem;
+}
+
+.historicalInput {
+    color: wheat;
+}
+
+.historicalOutput {
+    color: whitesmoke;
+}
+
+.historicalOutputError {
+    color: rgb(163, 163, 163);
+    background-color: #3f0900;
+}
+
+li {
+    list-style-type: none;
+}
