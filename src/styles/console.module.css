@@ -27,7 +27,10 @@
 
 .cmdHistory {
     background-color: #16172c;
-    color: whitesmoke; 
+    color: whitesmoke;
+    margin-left: 1rem; 
+    margin-right: 1rem;
+    padding: 5px;
 }
 
 .cmdHelp {

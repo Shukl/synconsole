@@ -7,6 +7,7 @@ import internalCommands from '../lib/internalCommands'
 import Help from './Help'
 import History from './History'
 import Activity from './Activity'
+var acorn = require('acorn')
 
 class CmdInput extends Component {
     constructor(props) {
@@ -43,20 +44,21 @@ class CmdInput extends Component {
     onChange = (e) => {
         this.changeTextArea(e.target);
         (e.target.value === '\n') && (e.target.value = '')
+        console.log(JSON.stringify(e.target.value))
         this.setState({value: e.target.value})
     }
 
     // Checks for enter/return key to interpret and record the commands
     onKeyPress = (e) => {
         // check for Enter+Shift for line break; check for Enter to interpret if value is non-null
-        !(e.key === 'Enter' && e.shiftKey) && e.key === 'Enter' && this.parse(e.target.value);
+        !(e.key === 'Enter' && e.shiftKey) && e.key === 'Enter' && this.parse();
     }
 
     parse = () => {
         let { value, activity, commands } = this.state
-        let trimmedVal = value.trim()
-        if (trimmedVal === ':help' || trimmedVal === ':clear' || trimmedVal === ':history') {
-            switch (trimmedVal) {
+        // let trimmedVal = value.trim()
+        if (value === ':help' || value === ':clear' || value === ':history') {
+            switch (value) {
                 case ':help':
                     this.setState({helpVisible: true,
                         historyVisible: false,
@@ -95,8 +97,15 @@ class CmdInput extends Component {
         }
         else {
             try {
-                const interpreted = new Interpreter(value)
-                if (interpreted.value === undefined) {
+                console.log('preparse', JSON.stringify(value))
+                // let trim = value.trim()
+                
+                const interpreted = acorn.parse(value, {ecmaVersion: 2020})
+                console.log('inerpreted acorn', interpreted)
+                let executed = window.eval(value)
+
+                console.log('executed', executed)
+                if (executed === undefined) {
                     this.setState({
                         result: 'undefined',
                         commands: [...commands, value],
@@ -110,9 +119,9 @@ class CmdInput extends Component {
                 }
                 else {
                     this.setState({
-                        result: interpreted.value,
+                        result: executed,
                         commands: [...commands, value],
-                        activity: [...activity, {'i': value, 'o': interpreted.value, 'e': false}],
+                        activity: [...activity, {'i': value, 'o': interpreted, 'e': false}],
                         value: '',
                         acChosen: false,
                         historyVisible: false,
@@ -121,8 +130,10 @@ class CmdInput extends Component {
                     })
                 }
             } catch (err) {
+                console.log('error', err)
+                console.log('err stringify', JSON.stringify(err))
                 this.setState({
-                    error: JSON.stringify(err),
+                    error: err,
                     commands: [...commands, value],
                     activity: [...activity, {'i': value, 'o': JSON.stringify(err), 'e':true}],
                     value: '',
