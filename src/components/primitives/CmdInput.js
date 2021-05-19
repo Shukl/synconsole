@@ -121,7 +121,7 @@ class CmdInput extends Component {
                     this.setState({
                         result: executed,
                         commands: [...commands, value],
-                        activity: [...activity, {'i': value, 'o': interpreted, 'e': false}],
+                        activity: [...activity, {'i': value, 'o': executed, 'e': false}],
                         value: '',
                         acChosen: false,
                         historyVisible: false,
