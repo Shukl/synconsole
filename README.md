@@ -12,3 +12,10 @@ Once I discovered this (and it took two sittings to arrive at this simple hack),
 * Latest support - at the moment const/let etc. don't seem to be working
 * Empty console behaviour - Arrow up Down on empty console shows past commands
 * Better pre-parsing to handle console.log etc.
+
+
+## RUN
+Nothing complex
+```npm install
+npm start```
+should suffice
