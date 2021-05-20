@@ -26,7 +26,7 @@ As I read a bit more about ASTs and how compilers/transpilers work, the limitati
 
 ## Screenshots
 ![Console 1](./screenshots/empty.png?raw=true "Empty Console")
-![Console 2](./screenshots/autcomplete.png?raw=true "Auto Complete")
+![Console 2](./screenshots/autocomplete.png?raw=true "Auto Complete")
 ![Console 3](./screenshots/fn.png?raw=true "Executing Function")
 
 
