@@ -8,10 +8,27 @@ I was wondering if I should deal with the overhead of adding a Node.js backend t
 Once I discovered this (and it took two sittings to arrive at this simple hack), I starting hacking on the react front end. I went ahead with the naive approach yet again, using a mix of class/functional components and making state changes as and where required to the point where I had to choose between integrating redux or converting everything to more elegant functional components and breaking down state changes into neater individual mutation calls which react with manage for me. Within some time I chose to not take the additional overhead of the common store and just power through with functional components and trim the fat. I also realised that I was making way too many re-renders so memos would definitely help with that. All that said, I still had the Interpreter part to take care of in a substantial way.
 
 ## TODOs
-* Better interpreter - I realise perhaps that I should have used babel instead of acorn for my AST generation.
+* Better interpreter - boilerplate acorn + eval was not sufficient at all.
 * Latest support - at the moment const/let etc. don't work
 * Empty console behaviour - Arrow up Down on empty console shows past commands
 * Better pre-parsing to handle console.log etc.
+
+
+## Evolution
+As I read a bit more about ASTs and how compilers/transpilers work, the limitations of my current approach became abundantly clear. Hence as a last ditch given the Thursday time limit I have assumed for this, I have put together a new branch called 'acorn' that explores a deeper traversal, interpretation and as a result a better final implementation for a modern JS interpeter. However, I have a limited set of functionality in one branch and a limited set in the other branch. As part of discussion we can talk a little about both of these branches and what makes them different. 
+
+## Known Limitations and Bugs
+* After the first command executes on the terminal a leading '\n' is added to the textarea even in null state. This is caused by erroneous or improper state handling. This does not affect parsing of statement/expression but it does break autocomplete. To use autocomplete get rid of the leading '\n' and empty the console manually.
+* up and down arrow keys should show last commands from the activity constant which records these. However, this hasn't been implemented so these do not work.
+* Pressing return on the autocomplete list item of your choice changes userInput but additionally also parses and executes the line as is. This is erroneous. Ideal behavior will allow your cursor to return to the textarea and execute command manually.
+* Tab does not complete your partial userInput as per active suggestion. However this would have been a better implementation than the return key perhaps.
+
+
+## Screenshots
+![Console 1](./screenshots/empty.png?raw=true "Empty Console")
+![Console 2](./screenshots/autcomplete.png?raw=true "Auto Complete")
+![Console 3](./screenshots/fn.png?raw=true "Executing Function")
+
 
 
 ## RUN
