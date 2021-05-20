@@ -30,15 +30,16 @@
 }
 
 .suggestions {
-    position: absolute;
+    position: fixed;
+    top:0;
+    right:0;
     border: 0.5px solid transparent;
-    border-color: thistle;
+    border-color: #e0ac00;
     background-color: cadetblue;
     padding: 1px;
     font-size: 12pt;
-    margin-left: 5rem;
-    margin-right: 30rem;
     color: white;
+    width: 50%;
 }
 
 .suggestions ul {
@@ -50,10 +51,14 @@
 }
 
 .activeChoice {
-    color: black;
+    color: rgb(255, 208, 0);
     font-size: 16pt;
 }
 
 hr {
     border: 0.1px solid cadetblue;
+}
+
+.alignRight {
+    text-align: right;
 }

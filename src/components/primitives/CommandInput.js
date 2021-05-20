@@ -61,7 +61,8 @@ function CommandInput(){
     }
 
     const parse = (value) => {
-        setCommands([...commands, value])
+        console.log(value)
+        setCommands([value, ...commands]);
         setValue("")
         if (value.startsWith(":")) {
         parseInternalCommands(value)

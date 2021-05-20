@@ -8,24 +8,30 @@ function Autocomplete({pool, parse, activity}) {
     const [filteredSuggestions, setFilteredSuggestions] = useState([])
     const [showSuggestions, setShowSuggestions] = useState(false)
     const [userInput, setUserInput] = useState('')
+    const [userActivity, setUserActivity] = useState(activity)
 
     let suggestions
 
-    const onChange = e => {
-        console.log(e.target)
-        const element = e.nativeEvent.srcElement
-        element.height = element.scrollHeight + 'px'
+    useEffect(() => {
+        JSON.stringify(userInput) === '\n' && setUserInput('')
+        return () => {
+            console.log(JSON.stringify(userInput))
+        }
+    })
 
+    const onChange = e => {
+        e.nativeEvent.srcElement.style.height = e.nativeEvent.srcElement.scrollHeight + 'px'
         const userInput = e.target.value
         const filteredSuggestions = pool.filter(
           suggestion =>
             suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
         )
-
+        console.log(filteredSuggestions)
         setActiveSuggestion(0)
         setFilteredSuggestions(filteredSuggestions)
         setShowSuggestions(true)
         setUserInput(e.target.value)
+        textAreaRef.current.focus()
     }
 
     const onClick = e => {
@@ -35,12 +41,19 @@ function Autocomplete({pool, parse, activity}) {
         setUserInput(e.currentTarget.innerText)
     }
 
+    const sendParse = val => {
+        console.log(JSON.stringify(val), JSON.stringify(userInput));
+        val ? parse(val) : parse(userInput)
+        setUserInput('')
+    }
+
     const onKeyDown = e => {
         switch (e.keyCode) {
             case 13:
+                setUserInput(filteredSuggestions[activeSuggestion])
+                sendParse(filteredSuggestions[activeSuggestion])
                 setActiveSuggestion(0)
                 setShowSuggestions(false)
-                setUserInput(filteredSuggestions[activeSuggestion])
                 break
             case 38:
                 if (activeSuggestion === 0){
@@ -61,10 +74,13 @@ function Autocomplete({pool, parse, activity}) {
         }
     }
 
+
+
     (showSuggestions && userInput) &&
     filteredSuggestions.length ?
     suggestions = (
     <ul className={styles.suggestions}>
+        <li className={styles.alignRight}>Use ⇧⇩⏎ or 🐭</li>
         {filteredSuggestions.map((suggestion, index) => {
         return (
             <li className={index===activeSuggestion ? styles.activeChoice : ''} key={suggestion} onClick={onClick}>
@@ -80,18 +96,22 @@ function Autocomplete({pool, parse, activity}) {
         <>
             <hr className={styles.typeAreaSeparator}/>
             <div className={styles.prompt}>
-                <div className={styles.cursorInput}>
-                    <img src={chev} alt={'chev'} className={styles.cursorInputImg}/></div>
-                <textarea 
-                    type="text"
-                    value = {userInput}
-                    className = {styles.typeArea}
-                    onChange = {onChange}
-                    onKeyDown = {onKeyDown}
-                    ref = {textAreaRef}
-                    autoFocus
-                />
-                {suggestions}
+                <row>
+                    <div className={styles.cursorInput}>
+                        <img src={chev} alt={'chev'} className={styles.cursorInputImg}/></div>
+                    <textarea 
+                        type="text"
+                        value = {userInput}
+                        className = {styles.typeArea}
+                        onChange = {onChange}
+                        onKeyDown = {onKeyDown}
+                        ref = {textAreaRef}
+                        autoFocus
+                    />
+                </row>
+                <row>
+                    {suggestions}
+                </row>
             </div>
         </>
     )
