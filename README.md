@@ -9,13 +9,13 @@ Once I discovered this (and it took two sittings to arrive at this simple hack),
 
 ## TODOs
 * Better interpreter - I realise perhaps that I should have used babel instead of acorn for my AST generation.
-* Latest support - at the moment const/let etc. don't seem to be working
+* Latest support - at the moment const/let etc. don't work
 * Empty console behaviour - Arrow up Down on empty console shows past commands
 * Better pre-parsing to handle console.log etc.
 
 
 ## RUN
 Nothing complex
-```npm install
-npm start```
+```npm install```
+```npm start```
 should suffice
