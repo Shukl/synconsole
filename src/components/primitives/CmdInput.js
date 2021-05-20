@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
-import Interpreter from 'js-interpreter'
-import styles from '../../styles/console.module.css'
-import Autocomplete from './Autocomplete'
 import jsCommands from '../lib/jsCommands'
 import internalCommands from '../lib/internalCommands'
 import Help from './Help'
 import History from './History'
 import Activity from './Activity'
+import SyntaxComplete from './SyntaxComplete'
 var acorn = require('acorn')
 
 class CmdInput extends Component {
     constructor(props) {
         super(props)
-        this.textAreaRef = React.createRef()
         this.state = {
              internalCommands: internalCommands,
              activity: [],
@@ -21,16 +18,19 @@ class CmdInput extends Component {
              value: '',
              result: '',
              error: '',
+             postEx: false,
              helpVisible: false,
              activityVisible: true,
              historyVisible: false,
-             acChosen: false,
-             allCommands: jsCommands
+             allCommands: jsCommands,
         }
     }
     
     componentDidMount() {
-        this.textAreaRef.current.focus()
+        // this.textAreaRef.current.focus()
+        this.setState({
+            postEx: false
+        })
     }
 
     //auto adjusts the number of rows on the textarea element to ensure there is no text overflow.  
@@ -44,18 +44,15 @@ class CmdInput extends Component {
     onChange = (e) => {
         this.changeTextArea(e.target);
         (e.target.value === '\n') && (e.target.value = '')
-        console.log(JSON.stringify(e.target.value))
         this.setState({value: e.target.value})
     }
 
-    // Checks for enter/return key to interpret and record the commands
-    onKeyPress = (e) => {
-        // check for Enter+Shift for line break; check for Enter to interpret if value is non-null
-        !(e.key === 'Enter' && e.shiftKey) && e.key === 'Enter' && this.parse();
-    }
 
-    parse = () => {
-        let { value, activity, commands } = this.state
+    parse = (v) => {
+        let { activity, commands } = this.state
+        console.log('inside parser', v)
+        const value = JSON.parse(v)
+        console.log('parser', value)
         // let trimmedVal = value.trim()
         if (value === ':help' || value === ':clear' || value === ':history') {
             switch (value) {
@@ -144,6 +141,7 @@ class CmdInput extends Component {
                 })
             }
         } 
+        this.setState({postEx: true})
     }
 
 
@@ -151,7 +149,7 @@ class CmdInput extends Component {
 
     // Autocomplete choice handler
     choiceHandler = (choice) => {
-        this.setState({
+        choice && this.setState({
             value: choice,
             acChosen: true
         })
@@ -160,36 +158,26 @@ class CmdInput extends Component {
     }
 
     render() {
-        const { commands, 
-            internalCommands, 
-            activity, 
-            historyVisible, 
-            activityVisible,
-            value, 
-            helpVisible, 
-            acChosen,
-            allCommands
-            } = this.state
+        const { 
+            state: {
+                commands, 
+                internalCommands, 
+                activity, 
+                historyVisible, 
+                activityVisible,
+                value, 
+                postEx,
+                helpVisible, 
+                allCommands,
+            }
+        } = this
             // Could have used single presentational component for help/history/activity.
         return (
             <>  
                 <Help visible={helpVisible} commands={internalCommands}/>
                 <History visible={historyVisible} cmdHistory={commands}/>
                 <Activity visible={activityVisible} activity={activity}/>
-
-                <textarea 
-                    value = {value}
-                    className = {styles.typeArea}
-                    onChange = {this.onChange}
-                    ref = {this.textAreaRef}
-                    onKeyDown = {this.onKeyPress}
-                />
-                <Autocomplete 
-                    input = {value}
-                    choiceHandler = {this.choiceHandler}
-                    choiceMade = {acChosen}
-                    allCommands = {allCommands}
-                />
+                <SyntaxComplete pool={allCommands} parse={this.parse} postEx={postEx}/>
             </>
         )
     }

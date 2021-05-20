@@ -7,12 +7,14 @@ function Activity(props) {
         <div>
             {visible &&
                     <div>
-                        {activity.map( (action) => (
+                        {activity.map( (action, i) => (
                             <>
-                                <p className={styles.historicalInput}> {">"} {action.i}</p>
-                                { action.e === true ? <p className={styles.historicalOutputError}>{'<*'} {action.o}</p>
-                                : <p className={styles.historicalOutput}>{'<*'} {action.o}</p>
-                                } 
+                                <span key={i}>
+                                    <p className={styles.historicalInput}> {">"} {action.i}</p>
+                                    { action.e === true ? <p className={styles.historicalOutputError}>{'<*'} {action.o}</p>
+                                    : <p className={styles.historicalOutput}>{'<*'} {action.o}</p>
+                                    } 
+                                </span>
                             </>
                         ))}
                     </div>

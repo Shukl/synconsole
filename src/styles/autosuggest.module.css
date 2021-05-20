@@ -1,11 +1,41 @@
+.prompt {
+    display: block;
+}
+
+.cursorInput {
+    color: cadetblue;
+    display: inline-block;
+    width:1%;
+    height: 50px;
+    vertical-align: top;
+}
+
+.cursorInputImg {
+    width:100%;
+    height: auto;
+    vertical-align: top;
+}
+
+.typeArea {
+    resize: none;
+    background: none;
+    font-family: "Menlo", consolas, monospace;
+    border: 0;
+    padding-left: 10px;
+    display: inline-block;
+    width: 98%;
+    outline: none;
+    font-size: 10pt;
+    color: rgb(180, 180, 180);
+}
+
 .suggestions {
-    position: relative;
+    position: absolute;
     border: 0.5px solid transparent;
     border-color: thistle;
     background-color: cadetblue;
     padding: 1px;
-    margin-top: -80px;
-    font-size: 16px;
+    font-size: 12pt;
     margin-left: 5rem;
     margin-right: 30rem;
     color: white;
@@ -17,4 +47,13 @@
 
 .suggestions ul li {
     cursor: pointer;
+}
+
+.activeChoice {
+    color: black;
+    font-size: 16pt;
+}
+
+hr {
+    border: 0.1px solid cadetblue;
 }

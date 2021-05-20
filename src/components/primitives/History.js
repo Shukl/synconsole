@@ -10,7 +10,7 @@ function History(props) {
                     <h2>Command History</h2>
                     <ul>
                         {cmdHistory.map((cmd) => (
-                            <li key={cmd.id}>{cmd}</li>
+                            <li key={Date.now()}>{cmd}</li>
                         ))}             
                     </ul>
                 </div>
