@@ -51,7 +51,7 @@ class SyntaxComplete extends Component {
             showSuggestions: false,
             userInput: filteredSuggestions[activeSuggestion]
             }, () => {
-                parse(JSON.stringify(userInput)) 
+                parse(userInput) 
             })
         } else if (e.keyCode === 38) {
           if (activeSuggestion === 0) {
@@ -68,10 +68,10 @@ class SyntaxComplete extends Component {
       }
 
 
-    componentDidMount() {
-        console.log('executed', this.props.postEx)
-        this.props.postEx && this.setState({userInput:''})
-    }
+    // componentDidMount() {
+    //     console.log('mounted', this.props.postEx)
+    //     this.props.postEx && this.setState({userInput:''})
+    // }
 
     render() {
         const {

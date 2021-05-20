@@ -1,10 +1,9 @@
 import React from 'react'
 import styles from '../../styles/console.module.css'
 
-function History(props) {
-    const {visible, cmdHistory } = props
+function History({visible, cmdHistory }) {
     return (
-        <div>
+        <>
             { visible && 
                 <div className={styles.cmdHistory}>
                     <h2>Command History</h2>
@@ -15,7 +14,7 @@ function History(props) {
                     </ul>
                 </div>
                 }
-        </div>
+        </>
     )
 }
 

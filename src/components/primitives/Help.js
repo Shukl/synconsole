@@ -25,4 +25,4 @@ function Help(props) {
     )
 }
 
-export default Help
+export default React.memo(Help)

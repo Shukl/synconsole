@@ -1,52 +1,99 @@
-// /$$$$$$$ /$$$$$$$$/$$$$$$$ /$$$$$$$ /$$$$$$$$ /$$$$$$  /$$$$$$ /$$$$$$$$/$$$$$$$$/$$$$$$$$/$$$$$$$ 
-// | $$__  $| $$_____| $$__  $| $$__  $| $$_____//$$__  $$/$$__  $|__  $$__| $$_____| $$_____| $$__  $$
-// | $$  \ $| $$     | $$  \ $| $$  \ $| $$     | $$  \__| $$  \ $$  | $$  | $$     | $$     | $$  \ $$
-// | $$  | $| $$$$$  | $$$$$$$| $$$$$$$| $$$$$  | $$     | $$$$$$$$  | $$  | $$$$$  | $$$$$  | $$  | $$
-// | $$  | $| $$__/  | $$____/| $$__  $| $$__/  | $$     | $$__  $$  | $$  | $$__/  | $$__/  | $$  | $$
-// | $$  | $| $$     | $$     | $$  \ $| $$     | $$    $| $$  | $$  | $$  | $$     | $$     | $$  | $$
-// | $$$$$$$| $$$$$$$| $$     | $$  | $| $$$$$$$|  $$$$$$| $$  | $$  | $$  | $$$$$$$| $$$$$$$| $$$$$$$/
-// |_______/|________|__/     |__/  |__|________/\______/|__/  |__/  |__/  |________|________|_______/ 
-                                                                                                    
-// No longer using this as Autocomplete
-// Required too many state changes, prop transfers and complexity by having to make constant state comparisons
-// Instead i'm going to go the more tried and tested route of using a class component which combines both
-// textarea and the suggestions div in one component.
-                                                                                                    
-
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import styles from '../../styles/autosuggest.module.css'
+import chev from '../../static/cursor.png'
 
-function Autocomplete(props) {
-    const {input, choiceHandler, allCommands} = props
+function Autocomplete({pool, parse, activity}) {
+    const textAreaRef = React.createRef()
+    const [activeSuggestion, setActiveSuggestion] = useState(0)
+    const [filteredSuggestions, setFilteredSuggestions] = useState([])
+    const [showSuggestions, setShowSuggestions] = useState(false)
+    const [userInput, setUserInput] = useState('')
 
+    let suggestions
 
-    let filteredSuggestions = allCommands.filter( suggestion => suggestion.toLowerCase().indexOf(input.toLowerCase()) > -1
+    const onChange = e => {
+        console.log(e.target)
+        const element = e.nativeEvent.srcElement
+        element.height = element.scrollHeight + 'px'
+
+        const userInput = e.target.value
+        const filteredSuggestions = pool.filter(
+          suggestion =>
+            suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
         )
-    let visible = input && allCommands ? true : false
-    // if nothing obtained from filter op then don't show the div at all.
-    let filterEmpty = filteredSuggestions.length === 0 ? true : false
 
-    // TODOS
-    // Split at '.' to create deeper autocomplete.
-    // Support for chained commands, partial autocomplete as opposed to total autocomplete.
-    // keyboard interaction support - checking for esc/up/down and return - checking last key pressed only   
+        setActiveSuggestion(0)
+        setFilteredSuggestions(filteredSuggestions)
+        setShowSuggestions(true)
+        setUserInput(e.target.value)
+    }
+
+    const onClick = e => {
+        setActiveSuggestion(0)
+        setFilteredSuggestions([])
+        setShowSuggestions(false)
+        setUserInput(e.currentTarget.innerText)
+    }
+
+    const onKeyDown = e => {
+        switch (e.keyCode) {
+            case 13:
+                setActiveSuggestion(0)
+                setShowSuggestions(false)
+                setUserInput(filteredSuggestions[activeSuggestion])
+                break
+            case 38:
+                if (activeSuggestion === 0){
+                    break
+                } else { 
+                    setActiveSuggestion(activeSuggestion-1)
+                }
+                break
+            case 40:
+                if (activeSuggestion-1 === filteredSuggestions.length) {
+                    break
+                } else {
+                    setActiveSuggestion(activeSuggestion+1)
+                }
+                break
+            default:
+                break
+        }
+    }
+
+    (showSuggestions && userInput) &&
+    filteredSuggestions.length ?
+    suggestions = (
+    <ul className={styles.suggestions}>
+        {filteredSuggestions.map((suggestion, index) => {
+        return (
+            <li className={index===activeSuggestion ? styles.activeChoice : ''} key={suggestion} onClick={onClick}>
+            {suggestion}
+            </li>
+        )
+        })}
+    </ul>
+    ) :
+    suggestions = (<></>)
 
     return (
-        <> 
-        {
-        visible &&
-            !filterEmpty &&
-                (<div className={styles.suggestions}>
-                        <ul>
-                            {filteredSuggestions.map((option, i) => (
-                                <li key={option} onClick={() => choiceHandler(option)}>{option}</li>
-                            ))}
-                        </ul>
-                </div>)
-         
-        }
+        <>
+            <hr className={styles.typeAreaSeparator}/>
+            <div className={styles.prompt}>
+                <div className={styles.cursorInput}>
+                    <img src={chev} alt={'chev'} className={styles.cursorInputImg}/></div>
+                <textarea 
+                    type="text"
+                    value = {userInput}
+                    className = {styles.typeArea}
+                    onChange = {onChange}
+                    onKeyDown = {onKeyDown}
+                    ref = {textAreaRef}
+                    autoFocus
+                />
+                {suggestions}
+            </div>
         </>
-        
     )
 }
 

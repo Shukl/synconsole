@@ -1,5 +1,5 @@
 import './App.css';
-import CmdInput from './components/primitives/CmdInput';
+import CommandInput from './components/primitives/CommandInput';
 import styles from  './styles/interface.module.css'
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
     <>
       <div className={styles.consoleParent}>
         <div className="Input"> 
-          <CmdInput />
+          <CommandInput />
         </div>
       </div>
     </>
