@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/Shukl/synconsole/static/css/main.a8339702.chunk.css",
+    "main.js": "/Shukl/synconsole/static/js/main.40c6fd26.chunk.js",
+    "main.js.map": "/Shukl/synconsole/static/js/main.40c6fd26.chunk.js.map",
+    "runtime-main.js": "/Shukl/synconsole/static/js/runtime-main.c6d818c4.js",
+    "runtime-main.js.map": "/Shukl/synconsole/static/js/runtime-main.c6d818c4.js.map",
+    "static/js/2.d9a82da1.chunk.js": "/Shukl/synconsole/static/js/2.d9a82da1.chunk.js",
+    "static/js/2.d9a82da1.chunk.js.map": "/Shukl/synconsole/static/js/2.d9a82da1.chunk.js.map",
+    "static/js/3.9745763c.chunk.js": "/Shukl/synconsole/static/js/3.9745763c.chunk.js",
+    "static/js/3.9745763c.chunk.js.map": "/Shukl/synconsole/static/js/3.9745763c.chunk.js.map",
+    "index.html": "/Shukl/synconsole/index.html",
+    "static/css/main.a8339702.chunk.css.map": "/Shukl/synconsole/static/css/main.a8339702.chunk.css.map",
+    "static/js/2.d9a82da1.chunk.js.LICENSE.txt": "/Shukl/synconsole/static/js/2.d9a82da1.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c6d818c4.js",
+    "static/js/2.d9a82da1.chunk.js",
+    "static/css/main.a8339702.chunk.css",
+    "static/js/main.40c6fd26.chunk.js"
+  ]
+}
