@@ -3,6 +3,9 @@ import React, {useState } from "react";
 import { Activity, Help, History, AutoComplete } from "./"
 import { jsCommands, internalCommands } from "../lib"
 
+import Interpreter from "../parser/Interpreter";
+import Visitor from "../parser/Visitor";
+
 const acorn = require("acorn")
 
 function CommandInput(){
@@ -14,6 +17,7 @@ function CommandInput(){
   const [historyVisible, setHistoryVisible] = useState(false)
   const [allCommands, setAllCommands] = useState(jsCommands)
 
+  const jsInterpreter = new Interpreter(new Visitor());
 
     const parseInternalCommands = (command) => {
         switch (command) {
@@ -44,21 +48,10 @@ function CommandInput(){
     }
 
     const parseByAcorn = (command) => {
-        const root = acorn.parse(command, { ecmaVersion: 2020 })
-        const body = root.body[0]
-        console.log("BODY", body)
-        let text
-        if (body.type === "ExpressionStatement") {
-        text = `${body.expression.name}`
-        } else if (
-        body.type === "VariableDeclaration" &&
-        (body.kind === "const" || body.kind === "let")
-        ) {
-        text = `${body.kind} ${body.declarations[0].id.name} = ${body.declarations[0].init.raw}`
-        }
-        console.log("TEXT", text)
-        return text
-    }
+        const body = acorn.parse(command).body;
+        const interpreted = jsInterpreter.interpret(body);
+        return interpreted;
+      };
 
     const parse = (value) => {
         console.log(value)
@@ -72,10 +65,9 @@ function CommandInput(){
         setHelpVisible(false)
         try {
             // This needs to be fixed
-            const interpreted = parseByAcorn(value)
-            console.log("INTERPRETED", interpreted)
-            const executed = window.eval(value)
-            console.log("EXECUTED", executed)
+            const executed = parseByAcorn(value);
+            // Raw EVALUATION
+            // const executed = window.eval(value);
             setActivity([
             ...activity,
             { i: value, o: executed ?? "undefined", e: false },

@@ -7,8 +7,11 @@ I was wondering if I should deal with the overhead of adding a Node.js backend t
 
 Once I discovered this (and it took two sittings to arrive at this simple hack), I starting hacking on the react front end. I went ahead with the naive approach yet again, using a mix of class/functional components and making state changes as and where required to the point where I had to choose between integrating redux or converting everything to more elegant functional components and breaking down state changes into neater individual mutation calls which react with manage for me. Within some time I chose to not take the additional overhead of the common store and just power through with functional components and trim the fat. I also realised that I was making way too many re-renders so memos would definitely help with that. All that said, I still had the Interpreter part to take care of in a substantial way.
 
+## Evolution
+I did my time with eval and despite the fact that I used acorn for the  
+
+
 ## TODOs
-* Better interpreter - I realise perhaps that I should have used babel instead of acorn for my AST generation.
 * Latest support - at the moment const/let etc. don't work
 * Empty console behaviour - Arrow up Down on empty console shows past commands
 * Better pre-parsing to handle console.log etc.
